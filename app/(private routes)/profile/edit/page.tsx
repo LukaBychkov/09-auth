@@ -12,7 +12,7 @@ export default function EditProfilePage() {
   const handleSubmit = async (formData: FormData) => {
     try {
       const name = formData.get('username') as string;
-      const res = await updateMe(name);
+      const res = await updateMe({ username: name });
       if (res) {
         // Записуємо користувача у глобальний стан
         setUser(res);

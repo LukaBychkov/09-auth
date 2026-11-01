@@ -45,7 +45,7 @@ export interface RegisterRequest {
   password: string;
 }
 
-export const register = async (data: RegisterRequest) => {
+export const register = async (data: RegisterRequest): Promise<User> => {
   const res = await axiosInstance.post<User>('/auth/register', data);
   return res.data;
 };
@@ -54,12 +54,10 @@ export interface LoginRequest {
   email: string;
   password: string;
 }
-export const login = async (data: LoginRequest) => {
+
+export const login = async (data: LoginRequest): Promise<User> => {
   const res = await axiosInstance.post<User>('/auth/login', data);
   return res.data;
-};
-type checkSession = {
-  success: boolean;
 };
 
 export const checkSession = async (): Promise<User | null> => {
@@ -71,14 +69,16 @@ export const logout = async (): Promise<void> => {
   await axiosInstance.post('/auth/logout');
 };
 
-export const getMe = async () => {
+export const getMe = async (): Promise<User> => {
   const { data } = await axiosInstance.get<User>('/users/me');
   return data;
 };
 
-export const updateMe = async (name: string) => {
-  const { data } = await axiosInstance.patch<User>('/users/me', {
-    username: name,
-  });
+export interface UpdateMeParams {
+  username: string;
+}
+
+export const updateMe = async (body: UpdateMeParams): Promise<User> => {
+  const { data } = await axiosInstance.patch<User>('/users/me', body);
   return data;
 };
